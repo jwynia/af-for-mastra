@@ -14,8 +14,10 @@
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:compliance": "vitest run test/specification-compliance.test.ts test/round-trip-compliance.test.ts",
+    "test:compliance:watch": "vitest test/specification-compliance.test.ts test/round-trip-compliance.test.ts",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build && npm run typecheck",
+    "prepublishOnly": "npm run build && npm run typecheck && npm run test:compliance",
     "clean": "rm -rf dist"
   },
   "dependencies": {

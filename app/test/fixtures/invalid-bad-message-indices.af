@@ -1,0 +1,36 @@
+{
+  "agent_type": "letta",
+  "version": "0.1.0",
+  "name": "Bad Message Indices Agent",
+  "system": "You are a helpful assistant.",
+  "created_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2024-01-01T00:00:00Z",
+  "llm_config": {
+    "model": "gpt-4",
+    "temperature": 0.7
+  },
+  "core_memory": {
+    "persona": {
+      "label": "persona",
+      "value": "I am a helpful AI assistant.",
+      "limit": 2000
+    },
+    "human": {
+      "label": "human",
+      "value": "The user is interested in technology.",
+      "limit": 2000
+    }
+  },
+  "messages": [
+    {
+      "id": "msg_001",
+      "role": "user",
+      "text": "Hello",
+      "timestamp": "2024-01-01T10:00:00Z",
+      "tool_calls": [],
+      "tool_results": []
+    }
+  ],
+  "in_context_message_indices": [0, 5, 10],
+  "tools": []
+}

@@ -1,0 +1,191 @@
+{
+  "agent_type": "letta",
+  "version": "0.1.0",
+  "name": "Complete Agent Example",
+  "agent_id": "550e8400-e29b-41d4-a716-446655440000",
+  "system": "You are a helpful assistant that can use tools to help users.",
+  "created_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2024-01-20T14:45:30Z",
+  "llm_config": {
+    "model": "gpt-4",
+    "temperature": 0.7,
+    "max_tokens": 4096,
+    "top_p": 0.9,
+    "frequency_penalty": 0.0,
+    "presence_penalty": 0.0,
+    "provider": "openai"
+  },
+  "embedding_config": {
+    "model": "text-embedding-ada-002",
+    "dim": 1536,
+    "provider": "openai"
+  },
+  "core_memory": {
+    "persona": {
+      "label": "persona",
+      "value": "I am a helpful AI assistant with access to various tools for calculations and data retrieval.",
+      "limit": 2000
+    },
+    "human": {
+      "label": "human",
+      "value": "The user is a software developer who frequently asks technical questions and needs code assistance.",
+      "limit": 2000
+    },
+    "custom_context": {
+      "label": "custom_context",
+      "value": "This is a custom memory block for additional context.",
+      "limit": 1000
+    }
+  },
+  "messages": [
+    {
+      "id": "msg_001",
+      "role": "system",
+      "text": "System initialization message.",
+      "timestamp": "2024-01-01T00:00:00Z",
+      "tool_calls": [],
+      "tool_results": []
+    },
+    {
+      "id": "msg_002",
+      "role": "user",
+      "text": "Calculate 2 + 2",
+      "timestamp": "2024-01-01T10:00:00Z",
+      "tool_calls": [],
+      "tool_results": []
+    },
+    {
+      "id": "msg_003",
+      "role": "assistant",
+      "text": "I'll calculate that for you.",
+      "timestamp": "2024-01-01T10:00:01Z",
+      "tool_calls": [
+        {
+          "id": "call_001",
+          "name": "calculator",
+          "arguments": {
+            "expression": "2 + 2"
+          },
+          "metadata": {}
+        }
+      ],
+      "tool_results": []
+    },
+    {
+      "id": "msg_004",
+      "role": "tool",
+      "text": "",
+      "timestamp": "2024-01-01T10:00:02Z",
+      "tool_calls": [],
+      "tool_results": [
+        {
+          "id": "call_001",
+          "name": "calculator",
+          "result": 4,
+          "metadata": {}
+        }
+      ]
+    }
+  ],
+  "in_context_message_indices": [0, 1, 2, 3],
+  "tools": [
+    {
+      "name": "calculator",
+      "description": "Perform mathematical calculations",
+      "type": "python",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "expression": {
+            "type": "string",
+            "description": "Mathematical expression to evaluate"
+          }
+        },
+        "required": ["expression"]
+      },
+      "source_code": "def calculator(expression: str) -> float:\n    \"\"\"Safely evaluate a mathematical expression.\"\"\"\n    import ast\n    import operator\n    \n    ops = {\n        ast.Add: operator.add,\n        ast.Sub: operator.sub,\n        ast.Mult: operator.mul,\n        ast.Div: operator.truediv,\n        ast.Pow: operator.pow,\n        ast.USub: operator.neg,\n    }\n    \n    def eval_expr(node):\n        if isinstance(node, ast.Constant):\n            return node.value\n        elif isinstance(node, ast.BinOp):\n            return ops[type(node.op)](eval_expr(node.left), eval_expr(node.right))\n        elif isinstance(node, ast.UnaryOp):\n            return ops[type(node.op)](eval_expr(node.operand))\n        else:\n            raise ValueError(f'Unsupported operation: {type(node)}')\n    \n    try:\n        tree = ast.parse(expression, mode='eval')\n        return eval_expr(tree.body)\n    except Exception as e:\n        raise ValueError(f'Invalid expression: {e}')",
+      "metadata": {}
+    },
+    {
+      "name": "github_search",
+      "description": "Search GitHub repositories using MCP",
+      "type": "json_schema",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query for GitHub repositories"
+          },
+          "language": {
+            "type": "string",
+            "description": "Programming language filter",
+            "enum": ["python", "javascript", "typescript", "rust", "go"]
+          }
+        },
+        "required": ["query"]
+      },
+      "metadata": {
+        "_mastra_tool": {
+          "type": "mcp",
+          "server": "https://mcp-github.example.com",
+          "tool_name": "search_repositories",
+          "transport": "http",
+          "auth_ref": {
+            "provider": "env",
+            "config_id": "GITHUB_TOKEN",
+            "metadata": {
+              "auth_type": "bearer"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "webhook_call",
+      "description": "Make HTTP requests to external APIs",
+      "type": "json_schema",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "Payload to send"
+          }
+        },
+        "required": ["data"]
+      },
+      "metadata": {
+        "_mastra_tool": {
+          "type": "url",
+          "endpoint": "https://api.example.com/webhook",
+          "method": "POST",
+          "auth_ref": {
+            "provider": "oauth2",
+            "config_id": "api_oauth",
+            "metadata": {
+              "required_scopes": ["webhook:write"]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "tool_rules": [
+    {
+      "tool_name": "calculator",
+      "rule_type": "usage_limit",
+      "rule_content": "max_calls_per_conversation: 10"
+    },
+    {
+      "tool_name": "github_search",
+      "rule_type": "rate_limit",
+      "rule_content": "max_calls_per_minute: 5"
+    }
+  ],
+  "metadata": {
+    "created_by": "mastra-af-letta",
+    "export_version": "1.0.0",
+    "custom_field": "example_value"
+  }
+}
