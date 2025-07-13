@@ -1,7 +1,7 @@
-# Project Definition
+# Project Definition - mastra-af-letta
 
 ## Purpose
-This document defines the core purpose, goals, and scope of the Software Project Context Network template.
+This document defines the core purpose, goals, and scope of the mastra-af-letta npm package, which provides interoperability between Mastra.ai and Letta (formerly MemGPT) AI agent frameworks.
 
 ## Classification
 - **Domain:** Core Concept
@@ -13,102 +13,105 @@ This document defines the core purpose, goals, and scope of the Software Project
 
 ### Project Overview
 
-The Node-TypeScript Context Network is a specialized template for starting new Node.js TypeScript projects with built-in LLM management and navigation capabilities. It provides a structured approach to managing the complex web of decisions, designs, and domain knowledge that underlies Node-TypeScript development, while maintaining a clear separation between planning artifacts (context network) and implementation code (app/ directory).
+The mastra-af-letta package is a TypeScript library that enables seamless portability of AI agents between the Mastra.ai and Letta ecosystems through the .af (Agent File) format. It provides bidirectional conversion capabilities, allowing developers to import Letta agents into Mastra and export Mastra agents back to the .af format, complete with tool definitions, memory blocks, and conversation history.
 
 ### Vision Statement
 
-To transform Node-TypeScript development by creating a seamless bridge between human developers, AI agents, and project knowledge, enabling teams to navigate the rapidly evolving Node.js ecosystem and build more maintainable, comprehensible, and evolvable TypeScript applications.
+To eliminate platform lock-in for AI agent development by creating a universal bridge between major agent frameworks, enabling developers to leverage the best features of both Mastra.ai (TypeScript ecosystem) and Letta (Python ecosystem) while maintaining agent portability and preserving agent state across platforms.
 
 ### Mission Statement
 
-The Node-TypeScript Context Network template provides development teams with a structured knowledge management system that captures the "why" behind Node-TypeScript decisions, preserves institutional knowledge about framework choices and configurations, facilitates onboarding to complex Node.js projects, and enables AI-assisted development through clear separation of planning and implementation artifacts.
+The mastra-af-letta package provides developers with a robust, type-safe solution for agent portability that preserves agent functionality, state, and configuration across framework boundaries, supports advanced features like MCP tools and multi-language tool definitions, and enables version-controlled, git-friendly agent definitions through the standardized .af format.
 
 ### Project Objectives
 
-1. Provide a specialized context network structure optimized for Node.js TypeScript projects
-2. Establish clear patterns for documenting Node-TypeScript architecture decisions, framework selections, and configuration choices
-3. Create navigation paths tailored to Node.js development roles and TypeScript-specific tasks
-4. Enable effective collaboration between human developers and AI agents in the Node.js ecosystem
-5. Reduce knowledge silos around framework choices, build configurations, and TypeScript patterns
-6. Document decision-making processes for the rapidly evolving Node.js ecosystem
-7. Preserve institutional knowledge about TypeScript configuration and tooling choices
+1. Provide complete bidirectional conversion between Mastra.ai agents and the .af format
+2. Maintain full fidelity of agent state, including memory blocks, tools, and conversation history
+3. Support advanced tool types including JSON Schema, MCP tools, and multi-language implementations
+4. Ensure type safety through comprehensive TypeScript types and Zod validation schemas
+5. Enable git-friendly agent version control through human-readable JSON format
+6. Facilitate agent migration between Python (Letta) and TypeScript (Mastra) ecosystems
+7. Provide auto-fix capabilities for common .af format issues
 
 ### Success Criteria
 
-1. Reduced time to first meaningful contribution for new developers
-2. Decreased frequency of "archaeology" requests (digging for lost knowledge)
-3. Improved documentation coverage of major components
-4. Higher decision traceability percentage
-5. Increased documentation update frequency relative to code changes
-6. Greater developer confidence in making changes
-7. Better stakeholder understanding of system state
-8. Reduction in repeated mistakes
+1. Zero data loss during import/export operations between formats
+2. 100% compatibility with standard .af format specification
+3. Successful round-trip conversion (Letta → Mastra → Letta) without degradation
+4. Clear error messages for invalid .af files with actionable fixes
+5. Support for all major Mastra.ai agent features in export
+6. Comprehensive test coverage for all conversion scenarios
+7. Published to npm with regular updates and semantic versioning
+8. Active community adoption for agent portability use cases
 
 ### Project Scope
 
 #### In Scope
 
-- Context network structure specialized for Node.js TypeScript development
-- Templates for Node-TypeScript architecture decision records (ADRs)
-- Node.js component and module documentation patterns
-- TypeScript-specific process documentation templates
-- Node.js ecosystem technical debt tracking mechanisms
-- Navigation guides for Node.js development roles and TypeScript workflows
-- Integration patterns with Node.js project structures and package.json
-- Maintenance strategies for keeping documentation in sync with TypeScript code
-- Framework selection decision templates (Express, Fastify, Next.js, etc.)
-- TypeScript configuration and build tool decision frameworks
-- Node.js deployment and environment configuration guidance
-- Package management and dependency strategy documentation
+- .af format parsing and validation using Zod schemas
+- Conversion of Letta agents to Mastra AgentConfig format
+- Export of Mastra agents to .af format
+- Tool definition conversion (JSON Schema, MCP, Python/JS source)
+- Memory block management (core_memory, recall_memory)
+- Conversation history preservation with tool calls
+- TypeScript type definitions for all data structures
+- Auto-fix capabilities for common format issues
+- Comprehensive error handling and validation
+- Support for authentication references (non-embedded)
+- Documentation of .af format specification
+- Example usage patterns and migration guides
 
 #### Out of Scope
 
-- Actual Node.js/TypeScript implementation code (belongs in app/ directory)
-- Specific framework boilerplate or starter code
-- Pre-configured build systems or bundlers
-- Specific testing framework implementations
-- Continuous integration/continuous deployment (CI/CD) pipeline configurations
-- Specific project management methodologies
-- Package.json files or node_modules (belongs in app/ directory)
+- Direct API integration with Letta or Mastra platforms
+- Agent execution or runtime capabilities
+- Credential storage or management
+- Automatic agent behavior translation
+- GUI or CLI tools (library only)
+- Agent performance optimization
+- Platform-specific features not in .af format
 
 ### Stakeholders
 
 | Role | Responsibilities | Representative(s) |
 |------|-----------------|-------------------|
-| Node.js Developers | Use the context network alongside TypeScript development | Node.js development teams |
-| TypeScript Architects | Document Node-TypeScript architectural decisions and system design | Node.js architecture teams |
-| Technical Leads | Ensure alignment between context network and Node.js implementation | Node.js team leads |
-| New Team Members | Learn about the Node.js project through the context network | Onboarding Node.js developers |
-| AI Agents | Navigate and update the context network based on Node-TypeScript interactions | LLM assistants with Node.js knowledge |
-| DevOps Engineers | Reference deployment and environment configuration decisions | Infrastructure teams |
+| Mastra.ai Developers | Use the package to import/export agents | Mastra.ai community |
+| Letta Users | Export agents from Letta for use in other platforms | Letta/MemGPT community |
+| Package Maintainer | Maintain compatibility with .af spec updates | Project maintainer |
+| AI Agent Developers | Build portable agents across platforms | Cross-platform developers |
+| Tool Developers | Ensure tool definitions convert properly | MCP/tool authors |
+| Open Source Contributors | Submit fixes and feature enhancements | GitHub contributors |
 
 ### Timeline
 
-This is a template project without specific timeline milestones. Each Node-TypeScript implementation will have its own timeline.
+- Initial release: v1.0.0 with core import/export functionality
+- Future releases: Based on .af specification updates and community feedback
+- Semantic versioning for predictable updates
 
 ### Constraints
 
-- Must work with existing LLM agent capabilities and limitations
-- Should be compatible with standard version control systems (Git)
-- Must be Node.js and TypeScript ecosystem focused
-- Should not require specialized tools beyond text editors, LLM agents, and Node.js tooling
-- Must maintain separation between context network and app/ directory
-- Should work with common Node.js development environments
+- Must maintain compatibility with official .af format specification
+- TypeScript-first implementation with full type safety
+- No runtime dependencies on Letta or Mastra platforms
+- Must handle large conversation histories efficiently
+- Security: No credential storage in .af files
+- Cross-platform compatibility (Node.js 18+)
 
 ### Assumptions
 
-- Development teams will maintain discipline in separating planning from implementation artifacts
-- LLM agents will have sufficient context window to process relevant parts of the network
-- Teams will regularly update the context network alongside code changes
-- The context network will be stored in the same repository as the code or in a linked repository
+- .af format specification will remain stable with backward compatibility
+- Both Mastra.ai and Letta will continue to support their respective APIs
+- Developers need agent portability between platforms
+- JSON remains the preferred format for agent serialization
+- MCP tools will become increasingly important for agent capabilities
 
 ### Risks
 
-- Context network may become outdated if not maintained alongside code
-- Teams may struggle with the discipline of separating planning from implementation
-- LLM context limitations may restrict the ability to process the entire network
-- Over-documentation could slow down development velocity
-- Under-documentation could reduce the value of the context network
+- .af format specification changes could break compatibility
+- Platform-specific features may not translate perfectly
+- Large conversation histories could impact performance
+- Tool implementation differences between platforms
+- Authentication mechanism variations between frameworks
 
 ## Relationships
 - **Parent Nodes:** None

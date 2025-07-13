@@ -1,0 +1,59 @@
+{
+  "name": "mastra-af-letta",
+  "version": "0.1.0",
+  "description": "Letta .af (Agent File) format support for Mastra - enables importing and exporting agents in Letta's portable format",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm run typecheck",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "peerDependencies": {
+    "@mastra/core": ">=0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@mastra/core": {
+      "optional": false
+    }
+  },
+  "devDependencies": {
+    "@mastra/core": "^0.1.0",
+    "@types/node": "^20.17.9",
+    "tsup": "^8.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "2.0.3"
+  },
+  "keywords": [
+    "mastra",
+    "ai",
+    "agents",
+    "letta",
+    "memgpt",
+    "portability",
+    "import",
+    "export",
+    "af-format"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/mastra-af-letta.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "agent_type": "letta",
+  "name": "MCP-Enabled Assistant",
+  "description": "An agent with MCP tools and secure authentication",
+  "system": "You are a helpful AI assistant with access to external tools via MCP servers. Always use the appropriate tool when needed.",
+  "llm_config": {
+    "provider": "openai",
+    "model": "gpt-4",
+    "temperature": 0.7,
+    "max_tokens": 2000
+  },
+  "embedding_config": {
+    "provider": "openai",
+    "model": "text-embedding-3-small",
+    "dimensions": 1536
+  },
+  "core_memory": [
+    {
+      "label": "personality",
+      "value": "I am a helpful assistant specialized in using external tools securely.",
+      "character_limit": 500
+    },
+    {
+      "label": "capabilities",
+      "value": "I can search GitHub, read files, query databases, and access various APIs through MCP servers.",
+      "character_limit": 500
+    }
+  ],
+  "messages": [],
+  "tools": [
+    {
+      "name": "github_search",
+      "description": "Search GitHub repositories and issues",
+      "type": "json_schema",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["repositories", "issues", "users"],
+            "default": "repositories"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Maximum results to return",
+            "default": 10
+          }
+        },
+        "required": ["query"]
+      },
+      "metadata": {
+        "_mastra_tool": {
+          "type": "mcp",
+          "server": "https://mcp-github.example.com",
+          "tool_name": "search",
+          "transport": "http",
+          "auth_ref": {
+            "provider": "env",
+            "config_id": "GITHUB_TOKEN",
+            "metadata": {
+              "auth_type": "bearer"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "read_file",
+      "description": "Read contents of a local file",
+      "type": "json_schema",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "File path to read"
+          }
+        },
+        "required": ["path"]
+      },
+      "metadata": {
+        "_mastra_tool": {
+          "type": "mcp",
+          "server": "stdio://mcp-filesystem",
+          "tool_name": "read_file",
+          "transport": "stdio"
+        }
+      }
+    },
+    {
+      "name": "query_database",
+      "description": "Execute SQL queries on the application database",
+      "type": "json_schema",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "SQL query to execute"
+          },
+          "database": {
+            "type": "string",
+            "description": "Database name",
+            "default": "main"
+          }
+        },
+        "required": ["query"]
+      },
+      "metadata": {
+        "_mastra_tool": {
+          "type": "mcp",
+          "server": "https://mcp-database.internal",
+          "tool_name": "sql_query",
+          "transport": "http",
+          "auth_ref": {
+            "provider": "vault",
+            "config_id": "database/creds/readonly",
+            "metadata": {
+              "auth_type": "basic"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "slack_post",
+      "description": "Post a message to Slack",
+      "type": "json_schema",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "description": "Channel ID or name"
+          },
+          "message": {
+            "type": "string",
+            "description": "Message text"
+          }
+        },
+        "required": ["channel", "message"]
+      },
+      "metadata": {
+        "_mastra_tool": {
+          "type": "url",
+          "endpoint": "https://slack.com/api/chat.postMessage",
+          "method": "POST",
+          "auth_ref": {
+            "provider": "oauth2",
+            "config_id": "slack_workspace",
+            "metadata": {
+              "auth_type": "oauth2",
+              "required_scopes": ["chat:write", "channels:read"]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "get_weather",
+      "description": "Get weather information (standard tool without MCP)",
+      "type": "json_schema",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "description": "City name or coordinates"
+          }
+        },
+        "required": ["location"]
+      }
+    }
+  ],
+  "tool_rules": [
+    {
+      "tool_name": "query_database",
+      "rule_type": "max_use",
+      "configuration": {
+        "max_uses": 5,
+        "per": "conversation"
+      }
+    },
+    {
+      "tool_name": "slack_post",
+      "rule_type": "require_approval",
+      "configuration": {
+        "message": "This will post to Slack. Continue?"
+      }
+    }
+  ],
+  "tags": ["mcp", "secure", "external-tools"],
+  "metadata_": {
+    "mcp_servers": [
+      "https://mcp-github.example.com",
+      "stdio://mcp-filesystem",
+      "https://mcp-database.internal"
+    ],
+    "security_level": "production"
+  },
+  "version": "0.1.0",
+  "created_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2024-01-01T00:00:00Z"
+}
