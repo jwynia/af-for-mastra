@@ -281,9 +281,20 @@ function applyAutoFixes(data: unknown): unknown {
     fixed.version = '0.1.0';
   }
 
-  // Ensure arrays exist
-  if (!Array.isArray(fixed.core_memory)) {
-    fixed.core_memory = [];
+  // Ensure core_memory is an object (not array)
+  if (!fixed.core_memory || typeof fixed.core_memory !== 'object' || Array.isArray(fixed.core_memory)) {
+    fixed.core_memory = {
+      persona: {
+        label: 'persona',
+        value: 'I am a helpful AI assistant.',
+        limit: 2000
+      },
+      human: {
+        label: 'human',
+        value: 'The user needs assistance.',
+        limit: 2000
+      }
+    };
   }
   if (!Array.isArray(fixed.messages)) {
     fixed.messages = [];

@@ -9,11 +9,18 @@ export default defineConfig({
   minify: false,
   target: 'es2020',
   outDir: 'dist',
-  external: ['@mastra/core'],
+  external: ['zod'],
+  splitting: false,
+  treeshake: true,
+  outExtension({ format }) {
+    return {
+      js: format === 'cjs' ? '.cjs' : '.js',
+    };
+  },
   esbuildOptions: (options) => {
     options.banner = {
       js: `/**
- * @mastra/portability-af-letta
+ * mastra-af-letta
  * Letta .af (Agent File) format support for Mastra
  * @license MIT
  */`,

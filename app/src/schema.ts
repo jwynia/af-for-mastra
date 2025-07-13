@@ -47,11 +47,9 @@ const toolTypeSchema = z.enum(['python', 'javascript', 'json_schema'], {
 });
 
 /**
- * Tool rule type validation
+ * Tool rule type validation - flexible string for different frameworks
  */
-const toolRuleTypeSchema = z.enum(['max_use', 'require_approval', 'dependency', 'custom'], {
-  errorMap: () => ({ message: 'Rule type must be one of: max_use, require_approval, dependency, custom' }),
-});
+const toolRuleTypeSchema = z.string().min(1, 'Rule type is required');
 
 /**
  * LLM configuration schema
@@ -119,6 +117,7 @@ export const toolCallSchema = z
     id: z.string().min(1, 'Tool call ID is required'),
     name: z.string().min(1, 'Tool name is required'),
     arguments: z.record(z.unknown()),
+    metadata: z.record(z.unknown()).optional(),
   })
   .describe('Tool invocation request');
 
@@ -127,9 +126,11 @@ export const toolCallSchema = z
  */
 export const toolResultSchema = z
   .object({
-    tool_call_id: z.string().min(1, 'Tool call ID is required'),
-    result: z.unknown(),
+    id: z.string().min(1, 'Tool result ID is required'),
+    name: z.string().min(1, 'Tool name is required'),
+    result: z.unknown().optional(),
     error: z.string().optional(),
+    metadata: z.record(z.unknown()).optional(),
   })
   .describe('Tool execution result');
 
@@ -286,7 +287,7 @@ export const toolRuleSchema = z
   .object({
     tool_name: z.string().min(1, 'Tool name is required'),
     rule_type: toolRuleTypeSchema,
-    configuration: z.record(z.unknown()),
+    rule_content: z.string().min(1, 'Rule content is required'),
   })
   .describe('Tool usage rule');
 
@@ -308,8 +309,11 @@ export const afAgentSchema = z
     llm_config: llmConfigSchema,
     embedding_config: embeddingConfigSchema.optional(),
 
-    // Memory components
-    core_memory: z.array(coreMemoryBlockSchema),
+    // Memory components - object with named memory blocks
+    core_memory: z.record(coreMemoryBlockSchema).refine(
+      (memory) => memory.persona && memory.human,
+      'Core memory must contain at least persona and human blocks'
+    ),
     messages: z.array(messageSchema),
     in_context_message_indices: z
       .array(z.number().nonnegative('Message index must be non-negative'))

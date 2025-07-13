@@ -25,10 +25,7 @@ export type MessageRole = 'user' | 'assistant' | 'system' | 'tool';
  */
 export type ToolType = 'python' | 'javascript' | 'json_schema';
 
-/**
- * Tool rule types for constraining tool usage
- */
-export type ToolRuleType = 'max_use' | 'require_approval' | 'dependency' | 'custom';
+// Tool rule type is now just a string for flexibility
 
 /**
  * Main agent schema - represents a complete serialized agent
@@ -72,9 +69,9 @@ export interface AfAgentSchema {
 
   /**
    * Core memory blocks that persist across conversations
-   * These typically include personality traits and user information.
+   * Object with named memory blocks (persona, human, and custom blocks).
    */
-  core_memory: AfCoreMemoryBlock[];
+  core_memory: Record<string, AfCoreMemoryBlock>;
 
   /**
    * Complete message history for the agent
@@ -300,17 +297,27 @@ export interface AfToolResult {
   /**
    * ID of the tool call this result corresponds to
    */
-  tool_call_id: string;
+  id: string;
+
+  /**
+   * Name of the tool that was executed
+   */
+  name: string;
 
   /**
    * Result data from the tool
    */
-  result: unknown;
+  result?: unknown;
 
   /**
    * Error message if the tool execution failed
    */
   error?: string;
+
+  /**
+   * Additional metadata about the tool result
+   */
+  metadata?: Record<string, unknown>;
 }
 
 /**
@@ -438,16 +445,16 @@ export interface AfToolRule {
   /**
    * Type of rule to apply
    */
-  rule_type: ToolRuleType;
+  rule_type: string;
 
   /**
-   * Rule-specific configuration
+   * Rule content as string
    * 
    * @example
-   * For 'max_use': { "max_uses": 3 }
-   * For 'dependency': { "requires": ["other_tool"] }
+   * "max_calls_per_conversation: 10"
+   * "require_approval: true"
    */
-  configuration: Record<string, unknown>;
+  rule_content: string;
 }
 
 /**

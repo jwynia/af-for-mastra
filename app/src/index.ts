@@ -58,24 +58,23 @@ export {
   type ParseOptions,
 } from './parser';
 
-// Export import/export functions
-export {
-  importAfAgent,
-  type MastraMemoryConfig,
-  type AfImportResult,
-  type AfImportWarning,
-  type AfImportOptions,
-} from './import';
+// Note: Mastra integration temporarily disabled pending interface updates
+// export {
+//   importAfAgent,
+//   type MastraMemoryConfig,
+//   type AfImportResult,
+//   type AfImportWarning,
+//   type AfImportOptions,
+// } from './import';
 
-// Re-export Mastra types that users will need
-export type { AgentConfig, ToolAction, ToolsInput } from '@mastra/core';
-
-export {
-  exportMastraAgent,
-  quickExportAgent,
-  type AfExportResult,
-  type AfExportOptions,
-} from './export';
+// Note: Mastra integration temporarily disabled pending interface updates
+// export type { AgentConfig } from '@mastra/core';
+// export {
+//   exportMastraAgent,
+//   quickExportAgent,
+//   type AfExportResult,
+//   type AfExportOptions,
+// } from './export';
 
 // Version of the .af format this package supports
 export const SUPPORTED_AF_VERSION = '0.1.0';

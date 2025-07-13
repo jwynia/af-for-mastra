@@ -2,13 +2,31 @@
   "name": "mastra-af-letta",
   "version": "0.1.0",
   "description": "Letta .af (Agent File) format support for Mastra - enables importing and exporting agents in Letta's portable format",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js", 
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "sideEffects": false,
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -28,7 +46,7 @@
   },
   "peerDependenciesMeta": {
     "@mastra/core": {
-      "optional": false
+      "optional": true
     }
   },
   "devDependencies": {
