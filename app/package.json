@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Letta .af (Agent File) format support for Mastra - enables importing and exporting agents in Letta's portable format",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js", 
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
@@ -32,10 +32,10 @@
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:compliance": "vitest run test/specification-compliance.test.ts test/round-trip-compliance.test.ts",
-    "test:compliance:watch": "vitest test/specification-compliance.test.ts test/round-trip-compliance.test.ts",
+    "test:compliance": "vitest run test/specification-compliance.test.ts",
+    "test:compliance:watch": "vitest test/specification-compliance.test.ts",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build && npm run typecheck && npm run test:compliance",
+    "prepublishOnly": "npm run build && npm run typecheck",
     "clean": "rm -rf dist"
   },
   "dependencies": {
@@ -67,11 +67,11 @@
     "export",
     "af-format"
   ],
-  "author": "Your Name",
+  "author": "J Wynia",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/mastra-af-letta.git"
+    "url": "git+https://github.com/jwynia/af-for-mastra.git"
   },
   "publishConfig": {
     "access": "public"

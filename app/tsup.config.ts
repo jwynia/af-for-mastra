@@ -2,6 +2,8 @@ import { defineConfig } from 'tsup';
 
 export default defineConfig({
   entry: ['src/index.ts'],
+  // Exclude Mastra integration files until interfaces are updated
+  exclude: ['src/import.ts', 'src/export.ts'],
   format: ['cjs', 'esm'],
   dts: true,
   clean: true,

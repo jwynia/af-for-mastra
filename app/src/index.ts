@@ -58,23 +58,8 @@ export {
   type ParseOptions,
 } from './parser';
 
-// Note: Mastra integration temporarily disabled pending interface updates
-// export {
-//   importAfAgent,
-//   type MastraMemoryConfig,
-//   type AfImportResult,
-//   type AfImportWarning,
-//   type AfImportOptions,
-// } from './import';
-
-// Note: Mastra integration temporarily disabled pending interface updates
-// export type { AgentConfig } from '@mastra/core';
-// export {
-//   exportMastraAgent,
-//   quickExportAgent,
-//   type AfExportResult,
-//   type AfExportOptions,
-// } from './export';
+// TODO: Mastra integration will be enabled in a future version
+// when the correct Mastra.ai interfaces are available
 
 // Version of the .af format this package supports
 export const SUPPORTED_AF_VERSION = '0.1.0';

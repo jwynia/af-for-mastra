@@ -31,27 +31,27 @@ npm install @mastra/core
 
 ## Quick Start
 
-### Complete Import/Export Workflow
+### Core .af Format Support
 
 ```typescript
-import { parseAgentFile, importAfAgent, exportMastraAgent } from 'mastra-af-letta';
-import { readFileSync, writeFileSync } from 'fs';
+import { parseAgentFile, isValidAgentFile, afAgentSchema } from 'mastra-af-letta';
+import { readFileSync } from 'fs';
 
-// 1. Parse an .af file
+// 1. Parse and validate an .af file
 const afContent = readFileSync('./agent.af', 'utf-8');
 const afData = parseAgentFile(afContent);
 
-// 2. Import to Mastra format
-const importResult = importAfAgent(afData);
-const { agent, memory, warnings } = importResult;
+// 2. Work with the parsed agent data
+console.log(`Agent: ${afData.name}`);
+console.log(`Tools: ${afData.tools.map(t => t.name).join(', ')}`);
 
-// 3. Use the agent (with Mastra)
-// const response = await agent.chat('Hello!');
-
-// 4. Export back to .af format
-const exportResult = exportMastraAgent(agent, memory);
-writeFileSync('./exported.af', exportResult.content);
+// 3. Validate agent files
+if (isValidAgentFile(afContent)) {
+  console.log('Valid agent file!');
+}
 ```
+
+> **Note**: Mastra.ai integration (import/export functions) will be available in a future version once the correct Mastra interfaces are finalized.
 
 ### Parsing an Agent File
 
